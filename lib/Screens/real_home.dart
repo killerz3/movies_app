@@ -87,12 +87,9 @@ class _realHomeState extends State<realHome> {
                         padding: EdgeInsets.only(bottom: 20),
                         child: ListTile(
                           title: Text(snapshot.data[index].title),
-                          leading: KeepAlive(
-                            keepAlive: true,
-                            child: Image.network(
-                                "https://image.tmdb.org/t/p/original" +
-                                    snapshot.data[index].posterURL),
-                          ),
+                          leading: Image.network(
+                              "https://image.tmdb.org/t/p/original" +
+                                  snapshot.data[index].posterURL),
                           onTap: () {},
                         ),
                       );
@@ -157,6 +154,12 @@ Widget MovieCard(Movie movie, int index) => Container(
       child: Stack(clipBehavior: Clip.none, children: [
         Container(
             decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 2)
+                ],
                 borderRadius: BorderRadius.circular(30),
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -171,23 +174,35 @@ Widget MovieCard(Movie movie, int index) => Container(
                     begin: FractionalOffset.topCenter,
                     end: FractionalOffset.bottomCenter,
                     colors: [Colors.grey.withOpacity(0.0), Colors.black],
-                    stops: [0.0, 1.0]),
+                    stops: const [0.0, 1.0]),
               ),
             )),
         Positioned(
-          bottom: -10,
+          bottom: 0,
           left: 10,
           child: Row(
             children: [
               Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 2)
+                    ]),
                 width: 100,
-                child: CachedNetworkImage(
-                    imageUrl:
-                        "https://image.tmdb.org/t/p/original" + movie.posterURL,
-                    fit: BoxFit.cover),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: CachedNetworkImage(
+                      imageUrl: "https://image.tmdb.org/t/p/original" +
+                          movie.posterURL,
+                      fit: BoxFit.cover),
+                ),
               ),
               SizedBox(width: 10),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ConstrainedBox(
                     constraints: BoxConstraints(
@@ -202,13 +217,18 @@ Widget MovieCard(Movie movie, int index) => Container(
                     ),
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: Colors.yellowAccent,
-                      )
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            print(movie.voteAverage);
+                          },
+                          child: Text("press this"))
                     ],
                   )
                 ],
