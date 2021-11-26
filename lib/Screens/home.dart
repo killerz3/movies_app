@@ -2,6 +2,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/Screens/real_home.dart';
+import 'package:movies_app/Screens/search.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentScreen = 0;
-  List<Widget> _screens = [realHome(), Text('search'), Text('watchlist')];
+  List<Widget> _screens = [realHome(), search(), Text('watchlist')];
 
   Color GREY = Colors.grey;
   TextStyle LATO = GoogleFonts.lato();

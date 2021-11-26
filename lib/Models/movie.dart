@@ -27,7 +27,7 @@ class Movie {
   String posterURL;
   String title;
   String about;
-  var voteAverage;
+  String voteAverage;
   String release;
 
   Movie(

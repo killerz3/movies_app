@@ -27,7 +27,7 @@ Future<List<Movie>?> getTrending() async {
         posterURL: singleMovie['poster_path'],
         release: singleMovie['release_date'],
         title: singleMovie['title'],
-        voteAverage: singleMovie['vote_average'].toDouble);
+        voteAverage: singleMovie['vote_average'].toString());
 
     movies.add(movie);
   }

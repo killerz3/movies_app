@@ -9,6 +9,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies_app/Models/movie.dart';
+import 'package:movies_app/Screens/details_movie.dart';
 import 'package:movies_app/services/trending.dart';
 
 class realHome extends StatefulWidget {
@@ -67,38 +68,52 @@ class _realHomeState extends State<realHome> {
           ),
           SizedBox(height: 10),
           Expanded(
-            flex: 7,
-            child: FutureBuilder(
-              future: getTrending(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                // WHILE THE CALL IS BEING MADE AKA LOADING
-                if (ConnectionState.active != null && !snapshot.hasData) {
-                  return const Center(
-                      child: SpinKitWave(
-                    color: Colors.tealAccent,
-                    size: 100,
-                  ));
-                } else {
-                  return ListView.builder(
-                    cacheExtent: 9999,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.only(bottom: 20),
-                        child: ListTile(
-                          title: Text(snapshot.data[index].title),
-                          leading: Image.network(
-                              "https://image.tmdb.org/t/p/original" +
-                                  snapshot.data[index].posterURL),
-                          onTap: () {},
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          ),
+              flex: 7,
+              child: FutureBuilder(
+                  future: getTrending(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    // WHILE THE CALL IS BEING MADE AKA LOADING
+                    if (ConnectionState.active != null && !snapshot.hasData) {
+                      return const Center(
+                          child: SpinKitWave(
+                        color: Colors.tealAccent,
+                        size: 100,
+                      ));
+                    } else {
+                      return ListView.builder(
+                          cacheExtent: 9999,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: ListTile(
+                                  title: Text(snapshot.data[index].title),
+                                  leading: Image.network(
+                                      "https://image.tmdb.org/t/p/original" +
+                                          snapshot.data[index].posterURL),
+                                  trailing: Wrap(children: [
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.yellowAccent,
+                                      size: 20,
+                                    ),
+                                    Text(snapshot.data[index].voteAverage)
+                                  ]),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return movieDetails(
+                                              movie: snapshot.data[index]);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ));
+                          });
+                    }
+                  })),
         ],
       ),
     );
@@ -128,7 +143,8 @@ class _carouselState extends State<carousel> {
             ));
           } else {
             // ignore: dead_code
-            return Padding(
+            return Container(
+              width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(top: 10),
               child: CarouselSlider.builder(
                 itemCount: snapshot.data.length,
@@ -139,8 +155,10 @@ class _carouselState extends State<carousel> {
                   );
                 },
                 options: CarouselOptions(
-                    autoPlay: false,
+                    autoPlay: true,
                     autoPlayAnimationDuration: Duration(milliseconds: 500),
+                    autoPlayCurve: Curves.bounceInOut,
+                    pauseAutoPlayOnTouch: true,
                     enlargeCenterPage: true),
               ),
             );
@@ -153,6 +171,7 @@ Widget MovieCard(Movie movie, int index) => Container(
       margin: EdgeInsets.symmetric(horizontal: 0),
       child: Stack(clipBehavior: Clip.none, children: [
         Container(
+            width: double.maxFinite,
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -224,13 +243,12 @@ Widget MovieCard(Movie movie, int index) => Container(
                         Icons.star,
                         color: Colors.yellowAccent,
                       ),
-                      TextButton(
-                          onPressed: () {
-                            print(movie.voteAverage);
-                          },
-                          child: Text("press this"))
+                      Text(movie.voteAverage == '0.0'
+                          ? "Unavailable"
+                          : movie.voteAverage),
                     ],
-                  )
+                  ),
+                  Text(movie.release),
                 ],
               ),
             ],
