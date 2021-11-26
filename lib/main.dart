@@ -1,6 +1,6 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+// import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/Screens/home.dart';
 
 void main() {
@@ -22,7 +22,10 @@ class _MyAppState extends State<MyApp> {
       darkTheme:
           ThemeData(primarySwatch: Colors.teal, brightness: Brightness.dark),
       title: "Movie App",
-      home: Home(),
+      home: const Home(),
+      routes: {
+        "/home":(context)=> const Home()
+      },
     );
   }
 }

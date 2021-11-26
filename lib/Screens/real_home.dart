@@ -145,14 +145,11 @@ class _carouselState extends State<carousel> {
             // ignore: dead_code
             return Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: CarouselSlider.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index, realIndex) {
-                  return MovieCard(
-                    snapshot.data[index],
-                    index,
-                  );
+                  return MovieCard(snapshot.data[index], index, context);
                 },
                 options: CarouselOptions(
                     autoPlay: true,
@@ -167,92 +164,103 @@ class _carouselState extends State<carousel> {
   }
 }
 
-Widget MovieCard(Movie movie, int index) => Container(
-      margin: EdgeInsets.symmetric(horizontal: 0),
-      child: Stack(clipBehavior: Clip.none, children: [
-        Container(
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 2)
-                ],
-                borderRadius: BorderRadius.circular(30),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    "https://image.tmdb.org/t/p/original" + movie.backdropURL,
-                  ),
-                )),
-            child: Container(
+Widget MovieCard(Movie movie, int index, context) => GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return movieDetails(movie: movie);
+        }));
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        child: Stack(clipBehavior: Clip.none, children: [
+          Container(
+              width: double.maxFinite,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                gradient: LinearGradient(
-                    begin: FractionalOffset.topCenter,
-                    end: FractionalOffset.bottomCenter,
-                    colors: [Colors.grey.withOpacity(0.0), Colors.black],
-                    stops: const [0.0, 1.0]),
-              ),
-            )),
-        Positioned(
-          bottom: 0,
-          left: 10,
-          child: Row(
-            children: [
-              Container(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 1.5,
+                        offset: Offset(0, 7),
+                        blurRadius: 9)
+                  ],
+                  borderRadius: BorderRadius.circular(30),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      "https://image.tmdb.org/t/p/original" + movie.backdropURL,
+                    ),
+                  )),
+              child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 2)
-                    ]),
-                width: 100,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                      imageUrl: "https://image.tmdb.org/t/p/original" +
-                          movie.posterURL,
-                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: LinearGradient(
+                      begin: FractionalOffset.topCenter,
+                      end: FractionalOffset.bottomCenter,
+                      colors: [Colors.grey.withOpacity(0.0), Colors.black],
+                      stops: const [0.0, 1.0]),
                 ),
-              ),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 10,
-                      maxWidth: 200,
-                    ),
-                    child: AutoSizeText(
-                      movie.title,
-                      maxLines: 2,
-                      style: TextStyle(fontSize: 18),
-                      maxFontSize: 32,
-                    ),
+              )),
+          Positioned(
+            bottom: 0,
+            left: 10,
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            offset: Offset(0, 7),
+                            spreadRadius: 3,
+                            blurRadius: 2)
+                      ]),
+                  width: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                        imageUrl: "https://image.tmdb.org/t/p/original" +
+                            movie.posterURL,
+                        fit: BoxFit.cover),
                   ),
-                  Row(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        color: Colors.yellowAccent,
+                ),
+                SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: 10,
+                        maxWidth: 200,
                       ),
-                      Text(movie.voteAverage == '0.0'
-                          ? "Unavailable"
-                          : movie.voteAverage),
-                    ],
-                  ),
-                  Text(movie.release),
-                ],
-              ),
-            ],
-          ),
-        )
-      ]),
+                      child: AutoSizeText(
+                        movie.title,
+                        maxLines: 2,
+                        style: TextStyle(fontSize: 18),
+                        maxFontSize: 32,
+                      ),
+                    ),
+                    Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+
+                      mainAxisAlignment: MainAxisAlignment.start,
+
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          color: Colors.yellowAccent,
+                        ),
+                        Text(movie.voteAverage == '0.0'
+                            ? "Unavailable"
+                            : movie.voteAverage),
+                      ],
+                    ),
+                    Text(movie.release),
+                  ],
+                ),
+              ],
+            ),
+          )
+        ]),
+      ),
     );

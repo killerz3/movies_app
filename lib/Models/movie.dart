@@ -29,6 +29,7 @@ class Movie {
   String about;
   String voteAverage;
   String release;
+  int id;
 
   Movie(
       {required this.about,
@@ -37,5 +38,6 @@ class Movie {
       required this.posterURL,
       required this.release,
       required this.title,
-      required this.voteAverage});
+      required this.voteAverage,
+      required this.id});
 }

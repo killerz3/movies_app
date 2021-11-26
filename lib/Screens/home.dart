@@ -17,19 +17,49 @@ class _HomeState extends State<Home> {
 
   Color GREY = Colors.grey;
   TextStyle LATO = GoogleFonts.lato();
+  late PageController _pageController;
+  @override
+  void initState() {
+    _pageController = PageController();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentScreen],
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() => _currentScreen = index);
+        },
+        children: _screens,
+      ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(30), topLeft: Radius.circular(30)),
         child: BottomNavyBar(
           itemCornerRadius: 90,
           selectedIndex: _currentScreen,
-          onItemSelected: (index) => setState(() {
-            _currentScreen = index;
-          }),
+          onItemSelected: (index) {
+            setState(
+              () {
+                _currentScreen = index;
+
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return _screens[index];
+                // }));
+              },
+            );
+            _pageController.jumpToPage(index);
+          },
           items: [
             BottomNavyBarItem(
                 icon: Icon(Icons.home_rounded),
