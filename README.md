@@ -1,16 +1,16 @@
-# movies_app
+# Watchlist App using Flutter and TMDB API
+A movie watchlist app that provides users with an easy and convenient way to keep track of their favorite movies. 
 
-A new Flutter project.
+## Key Features
+- Display movie details such as ratings, descriptions, trailers, and posters by clicking on each movie
+- Store watchlists locally on the device using SharedPreferences 
+- User-friendly interface utilizing the provider package for state management 
 
-## Getting Started
+## Technical Aspects 
+The app was built using Flutter and the TMDB API. It makes use of SharedPreferences to store the watchlist locally on the device and utilizes the provider package for efficient state management. The code has been hosted on Github Pages for easy access and collaboration. 
 
-This project is a starting point for a Flutter application.
+## Future Plans
+This app has the potential to be expanded with the addition of user-centric features such as movie prediction based on users' choices and the ability to create multiple watchlists. 
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Conclusion
+This Watchlist App is a well-designed and user-friendly tool for movie enthusiasts to keep track of their favorite films. With its locally stored watchlist and efficient state management, it provides a seamless and enjoyable experience. If you're a movie buff, give this app a try! 🎥🎬🎞️
